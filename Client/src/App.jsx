@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Profile from './pages/Profile'
 import Signup from './pages/SignUp'
-import Signin from './pages/Signin'
+import Signin from './pages/SignIn'
 import Header from './components/Header'
 
 function App() {
