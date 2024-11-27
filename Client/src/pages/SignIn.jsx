@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  signInStart,
-  signInSuccess,
-  signInFaliure,
-} from "../redux/user/userSlice";
+import { signInStart, signInSuccess, signInFaliure } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SignIn() {
