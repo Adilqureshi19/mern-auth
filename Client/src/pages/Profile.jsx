@@ -9,7 +9,7 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
-import { updateUserStart, updateUserSuccess, updateUserFaliure } from "../redux/user/userSlice";
+import { updateUserStart, updateUserSuccess, updateUserFaliure, deleteUserStart, deleteUserFaliure, deleteUserSuccess } from "../redux/user/userSlice";
 
 function Profile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -56,6 +56,7 @@ function Profile() {
   const handleSubmit = async (e)=>{
     e.preventDefault();
     try {
+      dispatch(updateUserStart())
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
@@ -73,6 +74,24 @@ function Profile() {
     } catch (error) {
       dispatch(updateUserFaliure(error.message))
       
+    }
+  }
+  const handleDeleteAccount = async ()=>{
+    try {
+      dispatch(deleteUserStart())
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+       
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFaliure(data))
+        return;
+      }
+      dispatch(deleteUserSuccess(data))
+    } catch (error) {
+      dispatch(deleteUserFaliure(error))
     }
   }
   
@@ -128,7 +147,7 @@ function Profile() {
         </button>
       </form>
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete</span>
+        <span onClick={handleDeleteAccount} className="text-red-700 cursor-pointer">Delete</span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
       <p className="text-red-700 mt-5">{error && 'Something went wrong'}</p>
